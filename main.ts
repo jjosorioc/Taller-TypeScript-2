@@ -6,7 +6,17 @@ var datosSeries = dataObject.series;
 
 let bodyTablaTV: HTMLElement = document.getElementById("bodyTablaTV")!;
 
-// Función
+let divCard: HTMLElement = document.getElementById("divCard")!;
+
+
+
+
+
+
+
+
+// Funciones
+
 
 /**
  * Función para mostrar la información de las series.
@@ -18,7 +28,7 @@ function mostrarDatos(data: Serie[], body: HTMLElement): void {
     let promedio = 0;
     for (let i = 0; i < data.length; i++) {
         htmlVar += `
-        <tr>
+        <tr class=\"serie\">
             <th scope=\"row\">${data[i].id}</th>
             <td>${data[i].name}</td>
             <td>${data[i].channel}</td>
@@ -32,4 +42,44 @@ function mostrarDatos(data: Serie[], body: HTMLElement): void {
 }
 
 // Se llama la función para agregar al html
-mostrarDatos(datosSeries, bodyTablaTV)
+mostrarDatos(datosSeries, bodyTablaTV);
+
+
+
+// Event listeners
+
+let listaClassSerie: HTMLCollectionOf<Element> = document.getElementsByClassName("serie")!;
+
+for (let i = 0; i < listaClassSerie.length; i++) {
+
+
+    listaClassSerie[i].addEventListener("click", () => {
+        showCard(i);
+    });
+}
+
+
+
+/**
+ * 
+ * @param index 
+ */
+function showCard(index: number): void {
+    divCard.innerHTML = "";
+
+
+    let currentSerie: Serie = datosSeries[index];
+
+    let card: string = `
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="${currentSerie.imgLink}" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">${currentSerie.name}</h5>
+            <p class="card-text">${currentSerie.info}</p>
+            <a href="${currentSerie.pagina}" class="btn btn-primary">Página de la serie</a>
+        </div>
+    </div>
+    `;
+    //divCard.appendChild(card);
+    divCard.innerHTML = card;
+}
